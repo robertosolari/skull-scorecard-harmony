@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Player, RoundScore } from '@/types';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 interface ScoreTableProps {
   players: Player[];
   currentRound: number;
-  updatePlayerScores: (playerId: string, bid: number, tricks: number) => void;
+  updatePlayerScores: (playerId: string, bid: number, tricks: number, bonus: number) => void;
   allBidsEntered: boolean;
   setAllBidsEntered: (value: boolean) => void;
 }
@@ -24,7 +24,19 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
 }) => {
   const [bids, setBids] = useState<Record<string, string>>({});
   const [tricks, setTricks] = useState<Record<string, string>>({});
+  const [bonuses, setBonuses] = useState<Record<string, string>>({});
   const [submittedPlayers, setSubmittedPlayers] = useState<Record<string, boolean>>({});
+
+  // Reset local state when round changes
+  useEffect(() => {
+    setBids({});
+    setTricks({});
+    setBonuses({});
+    setSubmittedPlayers({});
+  }, [currentRound]);
+
+  // With 8 players, rounds 8-10 are capped at 8 cards
+  const maxCards = players.length === 8 && currentRound >= 8 ? 8 : currentRound;
 
   const handleSubmitBids = () => {
     const allPlayersHaveBids = players.every(player => {
@@ -44,18 +56,24 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
   const handleSubmitScore = (playerId: string) => {
     const bid = Number(bids[playerId]);
     const trick = Number(tricks[playerId]);
+    const bonus = Number(bonuses[playerId] || 0);
 
-    if (isNaN(bid) || bid < 0 || bid > currentRound) {
-      toast.error(`Bid must be between 0 and ${currentRound}`);
+    if (isNaN(bid) || bid < 0 || bid > maxCards) {
+      toast.error(`Bid must be between 0 and ${maxCards}`);
       return;
     }
 
-    if (isNaN(trick) || trick < 0 || trick > currentRound) {
-      toast.error(`Tricks must be between 0 and ${currentRound}`);
+    if (isNaN(trick) || trick < 0 || trick > maxCards) {
+      toast.error(`Tricks must be between 0 and ${maxCards}`);
       return;
     }
 
-    updatePlayerScores(playerId, bid, trick);
+    if (isNaN(bonus) || bonus < 0) {
+      toast.error('Bonus must be 0 or positive');
+      return;
+    }
+
+    updatePlayerScores(playerId, bid, trick, bonus);
     setSubmittedPlayers(prev => ({ ...prev, [playerId]: true }));
     toast.success(`Score updated for ${players.find(p => p.id === playerId)?.name}`);
   };
@@ -93,7 +111,10 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
               <th className="text-left py-3 px-4 font-medium">Player</th>
               <th className="text-center py-3 px-4 font-medium">Bid</th>
               {allBidsEntered && (
-                <th className="text-center py-3 px-4 font-medium">Tricks</th>
+                <>
+                  <th className="text-center py-3 px-4 font-medium">Tricks</th>
+                  <th className="text-center py-3 px-4 font-medium">Bonus</th>
+                </>
               )}
               <th className="text-center py-3 px-4 font-medium">Round Score</th>
               <th className="text-center py-3 px-4 font-medium">Total Score</th>
@@ -116,7 +137,7 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
                       <Input
                         type="number"
                         min={0}
-                        max={currentRound}
+                        max={maxCards}
                         value={bids[player.id] || ''}
                         onChange={(e) => setBids({ ...bids, [player.id]: e.target.value })}
                         className="input-glass text-center w-20 mx-auto"
@@ -127,25 +148,44 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
                       </span>
                     )}
                   </td>
-                  
+
                   {allBidsEntered && (
-                    <td className="py-3 px-4 text-center">
-                      {!isSubmitted ? (
-                        <Input
-                          type="number"
-                          min={0}
-                          max={currentRound}
-                          value={tricks[player.id] || ''}
-                          onChange={(e) => setTricks({ ...tricks, [player.id]: e.target.value })}
-                          className="input-glass text-center w-20 mx-auto"
-                          disabled={isSubmitted}
-                        />
-                      ) : (
-                        <span className="inline-block bg-skull-100 px-3 py-1 rounded-full font-medium text-skull-700">
-                          {tricks[player.id]}
-                        </span>
-                      )}
-                    </td>
+                    <>
+                      <td className="py-3 px-4 text-center">
+                        {!isSubmitted ? (
+                          <Input
+                            type="number"
+                            min={0}
+                            max={maxCards}
+                            value={tricks[player.id] || ''}
+                            onChange={(e) => setTricks({ ...tricks, [player.id]: e.target.value })}
+                            className="input-glass text-center w-20 mx-auto"
+                            disabled={isSubmitted}
+                          />
+                        ) : (
+                          <span className="inline-block bg-skull-100 px-3 py-1 rounded-full font-medium text-skull-700">
+                            {tricks[player.id]}
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        {!isSubmitted ? (
+                          <Input
+                            type="number"
+                            min={0}
+                            value={bonuses[player.id] || ''}
+                            onChange={(e) => setBonuses({ ...bonuses, [player.id]: e.target.value })}
+                            className="input-glass text-center w-20 mx-auto"
+                            placeholder="0"
+                            disabled={isSubmitted}
+                          />
+                        ) : (
+                          <span className="inline-block bg-amber-100 px-3 py-1 rounded-full font-medium text-amber-700">
+                            {bonuses[player.id] || 0}
+                          </span>
+                        )}
+                      </td>
+                    </>
                   )}
                   
                   <td className="py-3 px-4 text-center">

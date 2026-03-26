@@ -10,6 +10,7 @@ export interface RoundScore {
   round: number;
   bid: number;
   tricks: number;
+  bonus: number;
   score: number;
 }
 

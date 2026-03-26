@@ -21,43 +21,57 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md animate-scale-in">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-semibold">How to Play Skull King</DialogTitle>
+          <DialogTitle className="text-2xl font-semibold">Regole Skull King</DialogTitle>
           <DialogDescription>
-            Track scores for the trick-taking card game Skull King
+            Segnapunti per il gioco di carte Skull King
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="max-h-[60vh] pr-4">
           <div className="space-y-4 text-left">
             <div>
-              <h3 className="font-medium text-lg text-skull-700">Scoring Rules:</h3>
+              <h3 className="font-medium text-lg text-skull-700">Punteggio "Skull King":</h3>
               <ul className="list-disc pl-5 space-y-2 mt-2">
-                <li>Each round, players bid how many tricks they think they'll win</li>
-                <li>Correct bid: 20 points × round number for each trick</li>
-                <li>Missed bid: -10 points × difference between bid and actual tricks</li>
-                <li>Bonus points:
-                  <ul className="list-disc pl-5 mt-1">
-                    <li>Capturing Skull King: +30 points</li>
-                    <li>Capturing pirate with pirate: +20 points</li>
-                    <li>Each captured mermaid: +10 points</li>
-                  </ul>
-                </li>
+                <li>Ogni round i giocatori prevedono quante prese faranno</li>
+                <li><strong>Previsione ≥1 azzeccata:</strong> 20 punti per ogni presa</li>
+                <li><strong>Previsione ≥1 sbagliata:</strong> -10 punti per ogni presa di differenza</li>
+                <li><strong>Previsione 0 azzeccata:</strong> +10 punti per ogni carta distribuita nel round</li>
+                <li><strong>Previsione 0 sbagliata:</strong> -10 punti per ogni carta distribuita nel round</li>
               </ul>
             </div>
-            
+
             <div>
-              <h3 className="font-medium text-lg text-skull-700">How to use this app:</h3>
+              <h3 className="font-medium text-lg text-skull-700">Punti Bonus (solo se previsione corretta):</h3>
+              <ul className="list-disc pl-5 space-y-2 mt-2">
+                <li>Carte di valore 14 (semi normali): <strong>+10</strong> ciascuna</li>
+                <li>Carta nera di valore 14: <strong>+20</strong></li>
+                <li>Sirena catturata da Pirata: <strong>+20</strong></li>
+                <li>Pirata catturato da Skull King: <strong>+30</strong></li>
+                <li>Skull King catturato da Sirena: <strong>+40</strong></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-medium text-lg text-skull-700">Come usare l'app:</h3>
               <ol className="list-decimal pl-5 space-y-2 mt-2">
-                <li>Add players using the form at the top</li>
-                <li>Enter bids for each player at the start of a round</li>
-                <li>After the round completes, enter actual tricks won</li>
-                <li>Scores will be automatically calculated</li>
-                <li>Continue for all 10 rounds</li>
+                <li>Aggiungi i giocatori (2-8)</li>
+                <li>Inserisci le previsioni a inizio round</li>
+                <li>Dopo il round, inserisci le prese fatte e i bonus</li>
+                <li>I punteggi vengono calcolati automaticamente</li>
+                <li>Si giocano 10 round</li>
               </ol>
+            </div>
+
+            <div>
+              <h3 className="font-medium text-lg text-skull-700">Note:</h3>
+              <ul className="list-disc pl-5 space-y-2 mt-2">
+                <li>Con 8 giocatori i round 8, 9 e 10 hanno max 8 carte</li>
+                <li>I bonus vanno inseriti manualmente sommando i punti delle carte catturate</li>
+              </ul>
             </div>
           </div>
         </ScrollArea>
         <DialogClose asChild>
-          <Button className="button-primary w-full mt-4">Got it</Button>
+          <Button className="button-primary w-full mt-4">Ho capito</Button>
         </DialogClose>
       </DialogContent>
     </Dialog>
