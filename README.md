@@ -1,69 +1,69 @@
-# Welcome to your Lovable project
+# Skull King Scorecard
 
-## Project info
+Segnapunti digitale per il gioco di carte **Skull King**, con punteggio calcolato automaticamente secondo le regole ufficiali.
 
-**URL**: https://lovable.dev/projects/76867fff-d288-4ae6-a87b-ce7580e405ec
+## Funzionalita
 
-## How can I edit this code?
+- **2-8 giocatori** con 10 round di gioco
+- **Punteggio automatico** secondo il regolamento ufficiale "Skull King":
+  - Previsione >= 1 azzeccata: 20 punti per ogni presa
+  - Previsione >= 1 sbagliata: -10 punti per ogni presa di differenza
+  - Previsione 0 azzeccata: +10 punti per ogni carta distribuita nel round
+  - Previsione 0 sbagliata: -10 punti per ogni carta distribuita nel round
+- **Punti bonus** (solo se la previsione e corretta):
+  - Carte di valore 14 (semi normali): +10 ciascuna
+  - Carta nera di valore 14: +20
+  - Sirena catturata da Pirata: +20
+  - Pirata catturato da Skull King: +30
+  - Skull King catturato da Sirena: +40
+- **8 giocatori**: i round 8, 9 e 10 hanno max 8 carte (il mazzo ha 70 carte)
+- **Layout responsive**: cards su mobile, tabella su desktop
+- **Classifica** in tempo reale con animazioni
+- **Salvataggio automatico** su localStorage
 
-There are several ways of editing your application.
+## Come usare
 
-**Use Lovable**
+1. Aggiungi i giocatori (minimo 2, massimo 8)
+2. Premi "Start Game"
+3. A ogni round inserisci le previsioni e conferma
+4. Dopo aver giocato il round con le carte, inserisci le prese e i bonus
+5. I punteggi vengono calcolati automaticamente
+6. Dopo 10 round viene mostrata la classifica finale
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/76867fff-d288-4ae6-a87b-ce7580e405ec) and start prompting.
+## Sviluppo
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Requisiti: Node.js e npm.
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Installa le dipendenze
+npm install
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Avvia il server di sviluppo
 npm run dev
+
+# Esegui i test
+npm test
+
+# Build di produzione
+npm run build
 ```
 
-**Edit a file directly in GitHub**
+## Test
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+I test coprono tutta la logica di punteggio con esempi presi direttamente dal regolamento ufficiale:
 
-**Use GitHub Codespaces**
+```sh
+# Esecuzione singola
+npx vitest run
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+# Watch mode
+npm test
+```
 
-## What technologies are used for this project?
+## Tech Stack
 
-This project is built with .
-
+- React + TypeScript
 - Vite
-- TypeScript
-- React
-- shadcn-ui
 - Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/76867fff-d288-4ae6-a87b-ce7580e405ec) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+- shadcn/ui
+- Vitest (test)
