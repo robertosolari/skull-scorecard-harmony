@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
 import { GameState, Player } from '@/types';
+import { getMaxCardsForRound, calculateRoundScore } from '@/lib/scoring';
 import Header from '@/components/Header';
 import InfoModal from '@/components/InfoModal';
 import AddPlayerForm from '@/components/AddPlayerForm';
@@ -147,49 +148,19 @@ const Index = () => {
     toast.success('New game started');
   };
 
-  const getMaxCardsForRound = (round: number, playerCount: number): number => {
-    // With 8 players, rounds 8-10 are capped at 8 cards (deck has 70 cards)
-    if (playerCount === 8 && round >= 8) return 8;
-    return round;
-  };
-
   const updatePlayerScores = (playerId: string, bid: number, tricks: number, bonus: number) => {
     setGameState(prev => {
       const cardsDealt = getMaxCardsForRound(prev.currentRound, prev.players.length);
       const updatedPlayers = prev.players.map(player => {
         if (player.id !== playerId) return player;
 
-        // Calculate score for this round per official Skull King rules
-        let roundScore = 0;
+        const roundScore = calculateRoundScore(bid, tricks, bonus, cardsDealt);
 
-        if (bid === tricks) {
-          if (bid === 0) {
-            // Bid 0 and made it: +10 × cards dealt this round
-            roundScore = 10 * cardsDealt;
-          } else {
-            // Correct bid ≥1: 20 points × number of tricks
-            roundScore = 20 * tricks;
-          }
-          // Bonus points only count if prediction is correct
-          roundScore += bonus;
-        } else {
-          if (bid === 0) {
-            // Bid 0 but took tricks: -10 × cards dealt this round
-            roundScore = -10 * cardsDealt;
-          } else {
-            // Incorrect bid: -10 × difference
-            roundScore = -10 * Math.abs(bid - tricks);
-          }
-          // No bonus if prediction is wrong
-        }
-
-        // Add score for this round
         const newScores = [
           ...player.scores.filter(score => score.round !== prev.currentRound),
           { round: prev.currentRound, bid, tricks, bonus, score: roundScore }
         ];
 
-        // Calculate total score
         const totalScore = newScores.reduce((sum, score) => sum + score.score, 0);
 
         return {
