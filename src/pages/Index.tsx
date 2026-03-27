@@ -11,6 +11,7 @@ import PlayerList from '@/components/PlayerList';
 import RoundTracker from '@/components/RoundTracker';
 import ScoreTable from '@/components/ScoreTable';
 import ScoreCard from '@/components/ScoreCard';
+import Footer from '@/components/Footer';
 
 const Index = () => {
   const [infoModalOpen, setInfoModalOpen] = useState(false);
@@ -232,6 +233,7 @@ const Index = () => {
             )}
           </div>
         </div>
+        <Footer />
       </div>
     </div>
   );
