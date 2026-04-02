@@ -17,35 +17,40 @@ import Footer from '@/components/Footer';
 const Index = () => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState(false);
-  const [gameState, setGameState] = useState<GameState>({
-    players: [],
-    currentRound: 1,
-    totalRounds: 10,
-    gameStarted: false,
-    gameCompleted: false
+  const [gameState, setGameState] = useState<GameState>(() => {
+    const saved = localStorage.getItem('skullKingGameState');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        // ignore invalid JSON
+      }
+    }
+    return {
+      players: [],
+      currentRound: 1,
+      totalRounds: 10,
+      gameStarted: false,
+      gameCompleted: false
+    };
   });
-  const [allBidsEntered, setAllBidsEntered] = useState(false);
+  const [allBidsEntered, setAllBidsEntered] = useState(() => {
+    const saved = localStorage.getItem('skullKingGameState');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.gameStarted && !parsed.gameCompleted;
+      } catch {
+        // ignore
+      }
+    }
+    return false;
+  });
 
   // Save game state to localStorage when it changes
   useEffect(() => {
     localStorage.setItem('skullKingGameState', JSON.stringify(gameState));
   }, [gameState]);
-
-  // Load game state from localStorage when component mounts
-  useEffect(() => {
-    const savedState = localStorage.getItem('skullKingGameState');
-    if (savedState) {
-      try {
-        const parsedState = JSON.parse(savedState);
-        setGameState(parsedState);
-        if (parsedState.gameStarted && !parsedState.gameCompleted) {
-          setAllBidsEntered(true);
-        }
-      } catch (error) {
-        console.error('Error parsing saved game state:', error);
-      }
-    }
-  }, []);
 
   const handleAddPlayer = (name: string) => {
     if (gameState.players.some(player => player.name.toLowerCase() === name.toLowerCase())) {
