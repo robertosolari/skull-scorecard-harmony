@@ -2,22 +2,27 @@
 import React from 'react';
 import { Info, Github } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface HeaderProps {
   openInfoModal: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ openInfoModal }) => {
+  const { t } = useTranslation();
+
   return (
     <header className="w-full py-6 px-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <h1 className="text-lg sm:text-2xl font-semibold tracking-tight bg-gradient-to-r from-skull-700 to-skull-900 bg-clip-text text-transparent">
-            Skull King Scorecard
+            {t('header.title')}
           </h1>
-          <div className="tag animate-in delayed-100">Beta</div>
+          <div className="tag animate-in delayed-100">{t('header.beta')}</div>
         </div>
         <div className="flex items-center space-x-2">
+          <LanguageSwitcher />
           <a
             href="https://github.com/robertosolari/skull-scorecard-harmony"
             target="_blank"

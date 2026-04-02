@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import { GameState, Player } from '@/types';
 import { getMaxCardsForRound, calculateRoundScore } from '@/lib/scoring';
 import Header from '@/components/Header';
@@ -14,6 +15,7 @@ import ScoreCard from '@/components/ScoreCard';
 import Footer from '@/components/Footer';
 
 const Index = () => {
+  const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [gameState, setGameState] = useState<GameState>({
     players: [],
@@ -47,28 +49,28 @@ const Index = () => {
 
   const handleAddPlayer = (name: string) => {
     if (gameState.players.some(player => player.name.toLowerCase() === name.toLowerCase())) {
-      toast.error('A player with that name already exists');
+      toast.error(t('addPlayer.errorDuplicate'));
       return;
     }
-    
+
     if (gameState.players.length >= 8) {
-      toast.error('Maximum 8 players allowed');
+      toast.error(t('addPlayer.errorMaxPlayers'));
       return;
     }
-    
+
     const newPlayer: Player = {
       id: uuidv4(),
       name,
       scores: [],
       totalScore: 0
     };
-    
+
     setGameState(prev => ({
       ...prev,
       players: [...prev.players, newPlayer]
     }));
-    
-    toast.success(`${name} added to the game`);
+
+    toast.success(t('addPlayer.added', { name }));
   };
 
   const handleRemovePlayer = (id: string) => {
@@ -80,59 +82,59 @@ const Index = () => {
 
   const handleStartGame = () => {
     if (gameState.players.length < 2) {
-      toast.error('You need at least 2 players to start a game');
+      toast.error(t('roundTracker.errorMinPlayers'));
       return;
     }
-    
+
     setGameState(prev => ({
       ...prev,
       gameStarted: true
     }));
-    
-    toast.success('Game started!');
+
+    toast.success(t('roundTracker.gameStarted'));
   };
 
   const handleNextRound = () => {
     if (!allBidsEntered) {
-      toast.error('Please enter and confirm bids for all players first');
+      toast.error(t('roundTracker.errorBidsFirst'));
       return;
     }
-    
-    const allPlayersHaveScores = gameState.players.every(player => 
+
+    const allPlayersHaveScores = gameState.players.every(player =>
       player.scores.some(score => score.round === gameState.currentRound)
     );
-    
+
     if (!allPlayersHaveScores) {
-      toast.error('Please enter tricks won for all players');
+      toast.error(t('roundTracker.errorTricksFirst'));
       return;
     }
-    
+
     setGameState(prev => ({
       ...prev,
       currentRound: prev.currentRound + 1
     }));
-    
+
     setAllBidsEntered(false);
-    
-    toast.success(`Starting round ${gameState.currentRound + 1}`);
+
+    toast.success(t('roundTracker.startingRound', { round: gameState.currentRound + 1 }));
   };
 
   const handleFinishGame = () => {
-    const allPlayersHaveScores = gameState.players.every(player => 
+    const allPlayersHaveScores = gameState.players.every(player =>
       player.scores.some(score => score.round === gameState.currentRound)
     );
-    
+
     if (!allPlayersHaveScores) {
-      toast.error('Please enter tricks won for all players');
+      toast.error(t('roundTracker.errorTricksFirst'));
       return;
     }
-    
+
     setGameState(prev => ({
       ...prev,
       gameCompleted: true
     }));
-    
-    toast.success('Game completed!');
+
+    toast.success(t('roundTracker.gameCompletedToast'));
   };
 
   const handleResetGame = () => {
@@ -143,10 +145,10 @@ const Index = () => {
       gameStarted: false,
       gameCompleted: false
     });
-    
+
     setAllBidsEntered(false);
-    
-    toast.success('New game started');
+
+    toast.success(t('roundTracker.newGameStarted'));
   };
 
   const updatePlayerScores = (playerId: string, bid: number, tricks: number, bonus: number) => {
@@ -181,22 +183,22 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-skull-50 to-white">
       <Header openInfoModal={() => setInfoModalOpen(true)} />
-      
-      <InfoModal 
-        isOpen={infoModalOpen} 
-        onClose={() => setInfoModalOpen(false)} 
+
+      <InfoModal
+        isOpen={infoModalOpen}
+        onClose={() => setInfoModalOpen(false)}
       />
-      
+
       <div className="container max-w-7xl mx-auto px-4 py-6">
-        <AddPlayerForm 
-          onAddPlayer={handleAddPlayer} 
-          isGameStarted={gameState.gameStarted} 
+        <AddPlayerForm
+          onAddPlayer={handleAddPlayer}
+          isGameStarted={gameState.gameStarted}
         />
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             {gameState.gameStarted && !gameState.gameCompleted && (
-              <ScoreTable 
+              <ScoreTable
                 players={gameState.players}
                 currentRound={gameState.currentRound}
                 updatePlayerScores={updatePlayerScores}
@@ -205,15 +207,15 @@ const Index = () => {
               />
             )}
           </div>
-          
+
           <div className="space-y-6">
-            <PlayerList 
+            <PlayerList
               players={gameState.players}
               onRemovePlayer={handleRemovePlayer}
               isGameStarted={gameState.gameStarted}
             />
-            
-            <RoundTracker 
+
+            <RoundTracker
               currentRound={gameState.currentRound}
               totalRounds={gameState.totalRounds}
               onStartGame={handleStartGame}
@@ -224,11 +226,11 @@ const Index = () => {
               gameCompleted={gameState.gameCompleted}
               playersCount={gameState.players.length}
             />
-            
+
             {(gameState.gameStarted || gameState.gameCompleted) && (
-              <ScoreCard 
-                players={gameState.players} 
-                gameCompleted={gameState.gameCompleted} 
+              <ScoreCard
+                players={gameState.players}
+                gameCompleted={gameState.gameCompleted}
               />
             )}
           </div>

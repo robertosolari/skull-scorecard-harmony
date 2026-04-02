@@ -1,0 +1,110 @@
+{
+  "header": {
+    "title": "Skull King Scorecard",
+    "beta": "Beta"
+  },
+  "addPlayer": {
+    "title": "Add Players",
+    "placeholder": "Enter player name",
+    "add": "Add",
+    "errorEmpty": "Please enter a player name",
+    "errorTooLong": "Player name must be less than 15 characters",
+    "errorDuplicate": "A player with that name already exists",
+    "errorMaxPlayers": "Maximum 8 players allowed",
+    "added": "{{name}} added to the game"
+  },
+  "playerList": {
+    "title": "Players",
+    "noPlayers": "No players added yet",
+    "score": "Score:"
+  },
+  "roundTracker": {
+    "title": "Game Progress",
+    "startGame": "Start Game",
+    "nextRound": "Next Round",
+    "finishGame": "Finish Game",
+    "newGame": "New Game",
+    "roundOf": "Round {{current}} of {{total}}",
+    "gameCompleted": "Game completed",
+    "addPlayers": "Add at least 2 players to start",
+    "firstRound": "First Round",
+    "finalRound": "Final Round",
+    "round": "Round {{current}}",
+    "errorMinPlayers": "You need at least 2 players to start a game",
+    "gameStarted": "Game started!",
+    "errorBidsFirst": "Please enter and confirm bids for all players first",
+    "errorTricksFirst": "Please enter tricks won for all players",
+    "startingRound": "Starting round {{round}}",
+    "gameCompletedToast": "Game completed!",
+    "newGameStarted": "New game started"
+  },
+  "scoreTable": {
+    "round": "Round {{round}}",
+    "confirmBids": "Confirm Bids",
+    "player": "Player",
+    "bid": "Bid",
+    "tricks": "Tricks",
+    "bonus": "Bonus",
+    "roundPoints": "Round Points",
+    "total": "Total",
+    "confirm": "Confirm",
+    "prev": "Prev:",
+    "errorBidsAll": "Please enter bids for all players",
+    "bidsRegistered": "Bids registered! Play the round and enter tricks",
+    "errorBidRange": "Bid must be between 0 and {{max}}",
+    "errorTricksRange": "Tricks must be between 0 and {{max}}",
+    "errorBonusPositive": "Bonus must be 0 or positive",
+    "scoreUpdated": "Score updated for {{name}}"
+  },
+  "scoreCard": {
+    "finalResults": "Final Results",
+    "currentStandings": "Current Standings",
+    "points": "points",
+    "winner": "Winner!",
+    "noPlayers": "No players added yet"
+  },
+  "infoModal": {
+    "title": "Skull King Rules",
+    "description": "Scorecard for the Skull King card game",
+    "scoringTitle": "\"Skull King\" Scoring:",
+    "scoringRules": [
+      "Each round players predict how many tricks they will take",
+      "<strong>Bid \u22651 correct:</strong> 20 points per trick",
+      "<strong>Bid \u22651 wrong:</strong> -10 points per trick difference",
+      "<strong>Bid 0 correct:</strong> +10 points per card dealt in the round",
+      "<strong>Bid 0 wrong:</strong> -10 points per card dealt in the round"
+    ],
+    "bonusTitle": "Bonus Points (only if bid is correct):",
+    "bonusRules": [
+      "Value 14 cards (normal suits): <strong>+10</strong> each",
+      "Black value 14 card: <strong>+20</strong>",
+      "Mermaid captured by Pirate: <strong>+20</strong>",
+      "Pirate captured by Skull King: <strong>+30</strong>",
+      "Skull King captured by Mermaid: <strong>+40</strong>"
+    ],
+    "howToUseTitle": "How to use:",
+    "howToUseSteps": [
+      "Add players (2-8)",
+      "Enter bids at the start of each round",
+      "After the round, enter tricks won and bonuses",
+      "Scores are calculated automatically",
+      "Play 10 rounds"
+    ],
+    "notesTitle": "Notes:",
+    "notes": [
+      "With 8 players, rounds 8, 9 and 10 have max 8 cards",
+      "Bonuses must be entered manually by adding up captured card points"
+    ],
+    "gotIt": "Got it"
+  },
+  "footer": {
+    "bugOrContribute": "Found a bug or want to contribute?",
+    "openIssue": "Open an issue on GitHub",
+    "prWelcome": "Pull requests and suggestions are welcome!"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page not found",
+    "backHome": "Return to Home"
+  }
+}

@@ -4,6 +4,7 @@ import { Player } from '@/types';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 import AnimatedNumber from './AnimatedNumber';
+import { useTranslation } from 'react-i18next';
 
 interface PlayerListProps {
   players: Player[];
@@ -12,20 +13,22 @@ interface PlayerListProps {
 }
 
 const PlayerList: React.FC<PlayerListProps> = ({ players, onRemovePlayer, isGameStarted }) => {
+  const { t } = useTranslation();
+
   if (players.length === 0) {
     return (
       <div className="glass-card p-6 text-center animate-in delayed-200">
-        <p className="text-muted-foreground">No players added yet</p>
+        <p className="text-muted-foreground">{t('playerList.noPlayers')}</p>
       </div>
     );
   }
 
   return (
     <div className="glass-card p-6 mb-6 animate-in delayed-200">
-      <h2 className="text-xl font-medium mb-4">Players</h2>
+      <h2 className="text-xl font-medium mb-4">{t('playerList.title')}</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {players.map((player) => (
-          <div 
+          <div
             key={player.id}
             className="relative bg-white rounded-xl p-4 shadow-sm border border-skull-100 flex items-center justify-between card-hover"
           >
@@ -33,11 +36,11 @@ const PlayerList: React.FC<PlayerListProps> = ({ players, onRemovePlayer, isGame
               <h3 className="font-medium text-gray-900">{player.name}</h3>
               {isGameStarted && (
                 <p className="text-sm text-muted-foreground">
-                  Score: <AnimatedNumber value={player.totalScore} className="font-semibold text-skull-700" />
+                  {t('playerList.score')} <AnimatedNumber value={player.totalScore} className="font-semibold text-skull-700" />
                 </p>
               )}
             </div>
-            
+
             {!isGameStarted && (
               <Button
                 variant="ghost"

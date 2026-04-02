@@ -1,0 +1,110 @@
+{
+  "header": {
+    "title": "Skull King Scorecard",
+    "beta": "Beta"
+  },
+  "addPlayer": {
+    "title": "Aggiungi Giocatori",
+    "placeholder": "Nome giocatore",
+    "add": "Aggiungi",
+    "errorEmpty": "Inserisci il nome del giocatore",
+    "errorTooLong": "Il nome deve essere inferiore a 15 caratteri",
+    "errorDuplicate": "Esiste gi\u00e0 un giocatore con questo nome",
+    "errorMaxPlayers": "Massimo 8 giocatori consentiti",
+    "added": "{{name}} aggiunto alla partita"
+  },
+  "playerList": {
+    "title": "Giocatori",
+    "noPlayers": "Nessun giocatore aggiunto",
+    "score": "Punti:"
+  },
+  "roundTracker": {
+    "title": "Progresso Partita",
+    "startGame": "Inizia Partita",
+    "nextRound": "Prossimo Round",
+    "finishGame": "Fine Partita",
+    "newGame": "Nuova Partita",
+    "roundOf": "Round {{current}} di {{total}}",
+    "gameCompleted": "Partita completata",
+    "addPlayers": "Aggiungi almeno 2 giocatori per iniziare",
+    "firstRound": "Primo Round",
+    "finalRound": "Ultimo Round",
+    "round": "Round {{current}}",
+    "errorMinPlayers": "Servono almeno 2 giocatori per iniziare",
+    "gameStarted": "Partita iniziata!",
+    "errorBidsFirst": "Inserisci e conferma le previsioni per tutti i giocatori",
+    "errorTricksFirst": "Inserisci le prese per tutti i giocatori",
+    "startingRound": "Inizio round {{round}}",
+    "gameCompletedToast": "Partita completata!",
+    "newGameStarted": "Nuova partita iniziata"
+  },
+  "scoreTable": {
+    "round": "Round {{round}}",
+    "confirmBids": "Conferma Previsioni",
+    "player": "Giocatore",
+    "bid": "Previsione",
+    "tricks": "Prese",
+    "bonus": "Bonus",
+    "roundPoints": "Punti Round",
+    "total": "Totale",
+    "confirm": "Conferma",
+    "prev": "Prec:",
+    "errorBidsAll": "Inserisci le previsioni per tutti i giocatori",
+    "bidsRegistered": "Previsioni registrate! Gioca il round e inserisci le prese",
+    "errorBidRange": "La previsione deve essere tra 0 e {{max}}",
+    "errorTricksRange": "Le prese devono essere tra 0 e {{max}}",
+    "errorBonusPositive": "Il bonus deve essere 0 o positivo",
+    "scoreUpdated": "Punteggio aggiornato per {{name}}"
+  },
+  "scoreCard": {
+    "finalResults": "Risultati Finali",
+    "currentStandings": "Classifica Attuale",
+    "points": "punti",
+    "winner": "Vincitore!",
+    "noPlayers": "Nessun giocatore aggiunto"
+  },
+  "infoModal": {
+    "title": "Regole Skull King",
+    "description": "Segnapunti per il gioco di carte Skull King",
+    "scoringTitle": "Punteggio \"Skull King\":",
+    "scoringRules": [
+      "Ogni round i giocatori prevedono quante prese faranno",
+      "<strong>Previsione \u22651 azzeccata:</strong> 20 punti per ogni presa",
+      "<strong>Previsione \u22651 sbagliata:</strong> -10 punti per ogni presa di differenza",
+      "<strong>Previsione 0 azzeccata:</strong> +10 punti per ogni carta distribuita nel round",
+      "<strong>Previsione 0 sbagliata:</strong> -10 punti per ogni carta distribuita nel round"
+    ],
+    "bonusTitle": "Punti Bonus (solo se previsione corretta):",
+    "bonusRules": [
+      "Carte di valore 14 (semi normali): <strong>+10</strong> ciascuna",
+      "Carta nera di valore 14: <strong>+20</strong>",
+      "Sirena catturata da Pirata: <strong>+20</strong>",
+      "Pirata catturato da Skull King: <strong>+30</strong>",
+      "Skull King catturato da Sirena: <strong>+40</strong>"
+    ],
+    "howToUseTitle": "Come usare l'app:",
+    "howToUseSteps": [
+      "Aggiungi i giocatori (2-8)",
+      "Inserisci le previsioni a inizio round",
+      "Dopo il round, inserisci le prese fatte e i bonus",
+      "I punteggi vengono calcolati automaticamente",
+      "Si giocano 10 round"
+    ],
+    "notesTitle": "Note:",
+    "notes": [
+      "Con 8 giocatori i round 8, 9 e 10 hanno max 8 carte",
+      "I bonus vanno inseriti manualmente sommando i punti delle carte catturate"
+    ],
+    "gotIt": "Ho capito"
+  },
+  "footer": {
+    "bugOrContribute": "Hai trovato un bug o vuoi contribuire?",
+    "openIssue": "Apri una issue su GitHub",
+    "prWelcome": "Pull request e suggerimenti sono benvenuti!"
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Pagina non trovata",
+    "backHome": "Torna alla Home"
+  }
+}

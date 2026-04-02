@@ -7,6 +7,7 @@ import AnimatedNumber from './AnimatedNumber';
 import { Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useTranslation } from 'react-i18next';
 
 interface ScoreTableProps {
   players: Player[];
@@ -28,6 +29,7 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
   const [bonuses, setBonuses] = useState<Record<string, string>>({});
   const [submittedPlayers, setSubmittedPlayers] = useState<Record<string, boolean>>({});
   const isMobile = useIsMobile();
+  const { t } = useTranslation();
 
   // Reset local state when round changes
   useEffect(() => {
@@ -47,12 +49,12 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
     });
 
     if (!allPlayersHaveBids) {
-      toast.error("Inserisci le previsioni per tutti i giocatori");
+      toast.error(t('scoreTable.errorBidsAll'));
       return;
     }
 
     setAllBidsEntered(true);
-    toast.success("Previsioni registrate! Gioca il round e inserisci le prese");
+    toast.success(t('scoreTable.bidsRegistered'));
   };
 
   const handleSubmitScore = (playerId: string) => {
@@ -61,23 +63,23 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
     const bonus = Number(bonuses[playerId] || 0);
 
     if (isNaN(bid) || bid < 0 || bid > maxCards) {
-      toast.error(`La previsione deve essere tra 0 e ${maxCards}`);
+      toast.error(t('scoreTable.errorBidRange', { max: maxCards }));
       return;
     }
 
     if (isNaN(trick) || trick < 0 || trick > maxCards) {
-      toast.error(`Le prese devono essere tra 0 e ${maxCards}`);
+      toast.error(t('scoreTable.errorTricksRange', { max: maxCards }));
       return;
     }
 
     if (isNaN(bonus) || bonus < 0) {
-      toast.error('Il bonus deve essere 0 o positivo');
+      toast.error(t('scoreTable.errorBonusPositive'));
       return;
     }
 
     updatePlayerScores(playerId, bid, trick, bonus);
     setSubmittedPlayers(prev => ({ ...prev, [playerId]: true }));
-    toast.success(`Punteggio aggiornato per ${players.find(p => p.id === playerId)?.name}`);
+    toast.success(t('scoreTable.scoreUpdated', { name: players.find(p => p.id === playerId)?.name }));
   };
 
   const getLastRoundScore = (player: Player): RoundScore | undefined => {
@@ -101,14 +103,14 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
         <div className="flex justify-between items-center">
           <span className="font-semibold text-lg">{player.name}</span>
           <span className="text-sm font-medium text-skull-600">
-            Totale: <AnimatedNumber value={player.totalScore} className="font-bold" />
+            {t('scoreTable.total')}: <AnimatedNumber value={player.totalScore} className="font-bold" />
           </span>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
-          {/* Previsione */}
+          {/* Bid */}
           <div>
-            <label className="text-xs font-medium text-skull-500 uppercase">Previsione</label>
+            <label className="text-xs font-medium text-skull-500 uppercase">{t('scoreTable.bid')}</label>
             {!allBidsEntered ? (
               <Input
                 type="number"
@@ -125,10 +127,10 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
             )}
           </div>
 
-          {/* Prese */}
+          {/* Tricks */}
           {allBidsEntered && (
             <div>
-              <label className="text-xs font-medium text-skull-500 uppercase">Prese</label>
+              <label className="text-xs font-medium text-skull-500 uppercase">{t('scoreTable.tricks')}</label>
               {!isSubmitted ? (
                 <Input
                   type="number"
@@ -149,7 +151,7 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
           {/* Bonus */}
           {allBidsEntered && (
             <div>
-              <label className="text-xs font-medium text-skull-500 uppercase">Bonus</label>
+              <label className="text-xs font-medium text-skull-500 uppercase">{t('scoreTable.bonus')}</label>
               {!isSubmitted ? (
                 <Input
                   type="number"
@@ -167,10 +169,10 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
             </div>
           )}
 
-          {/* Punteggio Round */}
+          {/* Round Points */}
           {allBidsEntered && (
             <div>
-              <label className="text-xs font-medium text-skull-500 uppercase">Punti Round</label>
+              <label className="text-xs font-medium text-skull-500 uppercase">{t('scoreTable.roundPoints')}</label>
               <div className="mt-1 h-11 flex items-center justify-center">
                 {isSubmitted ? (
                   <AnimatedNumber
@@ -179,7 +181,7 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
                   />
                 ) : lastRoundScore ? (
                   <span className="text-muted-foreground text-sm">
-                    Prec: {lastRoundScore.score > 0 ? '+' : ''}{lastRoundScore.score}
+                    {t('scoreTable.prev')} {lastRoundScore.score > 0 ? '+' : ''}{lastRoundScore.score}
                   </span>
                 ) : (
                   <span className="text-muted-foreground">-</span>
@@ -189,14 +191,14 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
           )}
         </div>
 
-        {/* Conferma button */}
+        {/* Confirm button */}
         {allBidsEntered && !isSubmitted && (
           <Button
             onClick={() => handleSubmitScore(player.id)}
             className="w-full h-11 bg-green-500 hover:bg-green-600 text-white font-medium"
           >
             <Check className="h-5 w-5 mr-2" />
-            Conferma
+            {t('scoreTable.confirm')}
           </Button>
         )}
       </div>
@@ -208,16 +210,16 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
       <table className="w-full">
         <thead>
           <tr className="border-b border-skull-200">
-            <th className="text-left py-3 px-4 font-medium">Giocatore</th>
-            <th className="text-center py-3 px-4 font-medium">Previsione</th>
+            <th className="text-left py-3 px-4 font-medium">{t('scoreTable.player')}</th>
+            <th className="text-center py-3 px-4 font-medium">{t('scoreTable.bid')}</th>
             {allBidsEntered && (
               <>
-                <th className="text-center py-3 px-4 font-medium">Prese</th>
-                <th className="text-center py-3 px-4 font-medium">Bonus</th>
+                <th className="text-center py-3 px-4 font-medium">{t('scoreTable.tricks')}</th>
+                <th className="text-center py-3 px-4 font-medium">{t('scoreTable.bonus')}</th>
               </>
             )}
-            <th className="text-center py-3 px-4 font-medium">Punti Round</th>
-            <th className="text-center py-3 px-4 font-medium">Totale</th>
+            <th className="text-center py-3 px-4 font-medium">{t('scoreTable.roundPoints')}</th>
+            <th className="text-center py-3 px-4 font-medium">{t('scoreTable.total')}</th>
             {allBidsEntered && !allPlayersSubmitted && (
               <th className="text-center py-3 px-4 font-medium"></th>
             )}
@@ -326,14 +328,14 @@ const ScoreTable: React.FC<ScoreTableProps> = ({
   return (
     <div className="glass-card p-4 sm:p-6 animate-in delayed-400">
       <div className="flex justify-between items-center mb-4 sm:mb-6">
-        <h2 className="text-lg sm:text-xl font-medium">Round {currentRound}</h2>
+        <h2 className="text-lg sm:text-xl font-medium">{t('scoreTable.round', { round: currentRound })}</h2>
 
         {!allBidsEntered && (
           <Button
             onClick={handleSubmitBids}
             className="button-primary h-11"
           >
-            Conferma Previsioni
+            {t('scoreTable.confirmBids')}
           </Button>
         )}
       </div>

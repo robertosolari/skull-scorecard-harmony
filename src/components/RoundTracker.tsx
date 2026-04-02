@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 interface RoundTrackerProps {
   currentRound: number;
@@ -25,69 +26,71 @@ const RoundTracker: React.FC<RoundTrackerProps> = ({
   gameCompleted,
   playersCount
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="glass-card p-6 mb-6 animate-in delayed-300">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
-        <h2 className="text-xl font-medium mb-2 sm:mb-0">Game Progress</h2>
-        
+        <h2 className="text-xl font-medium mb-2 sm:mb-0">{t('roundTracker.title')}</h2>
+
         {!gameStarted && !gameCompleted && playersCount >= 2 && (
-          <Button 
+          <Button
             onClick={onStartGame}
             className="button-primary w-full sm:w-auto"
           >
-            Start Game
+            {t('roundTracker.startGame')}
           </Button>
         )}
-        
+
         {gameStarted && !gameCompleted && currentRound < totalRounds && (
-          <Button 
+          <Button
             onClick={onNextRound}
             className="button-primary w-full sm:w-auto"
           >
-            Next Round
+            {t('roundTracker.nextRound')}
           </Button>
         )}
-        
+
         {gameStarted && !gameCompleted && currentRound === totalRounds && (
-          <Button 
+          <Button
             onClick={onFinishGame}
             className="button-primary w-full sm:w-auto"
           >
-            Finish Game
+            {t('roundTracker.finishGame')}
           </Button>
         )}
-        
+
         {gameCompleted && (
-          <Button 
+          <Button
             onClick={onResetGame}
             className="button-primary w-full sm:w-auto"
           >
-            New Game
+            {t('roundTracker.newGame')}
           </Button>
         )}
       </div>
-      
+
       {gameStarted && (
         <div className="w-full bg-skull-100 rounded-full h-2 mb-4">
-          <div 
+          <div
             className="bg-skull-500 h-2 rounded-full transition-all duration-500 ease-out"
             style={{ width: `${(currentRound / totalRounds) * 100}%` }}
           ></div>
         </div>
       )}
-      
+
       <div className="flex justify-between items-center">
         <span className="text-muted-foreground text-sm">
-          {gameStarted 
-            ? `Round ${currentRound} of ${totalRounds}` 
-            : gameCompleted 
-              ? 'Game completed'
-              : 'Add at least 2 players to start'}
+          {gameStarted
+            ? t('roundTracker.roundOf', { current: currentRound, total: totalRounds })
+            : gameCompleted
+              ? t('roundTracker.gameCompleted')
+              : t('roundTracker.addPlayers')}
         </span>
-        
+
         {gameStarted && !gameCompleted && (
           <span className="tag">
-            {currentRound === 1 ? 'First Round' : currentRound === totalRounds ? 'Final Round' : `Round ${currentRound}`}
+            {currentRound === 1 ? t('roundTracker.firstRound') : currentRound === totalRounds ? t('roundTracker.finalRound') : t('roundTracker.round', { current: currentRound })}
           </span>
         )}
       </div>
